@@ -1,0 +1,40 @@
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: api-produtos-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: bd-produtos
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: coti
+    ports:
+      - "5435:5432"
+    volumes:
+      - api-produtos-postgres-data:/var/lib/postgresql/data
+    networks:
+      - api-produtos-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: api-produtos-pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: coti@email.com
+      PGADMIN_DEFAULT_PASSWORD: Coti@2026
+    ports:
+      - "5052:80"
+    depends_on:
+      - postgres
+    volumes:
+      - api-produtos-pgadmin-data:/var/lib/pgadmin
+    networks:
+      - api-produtos-network
+
+volumes:
+  api-produtos-postgres-data:
+  api-produtos-pgadmin-data:
+
+networks:
+  api-produtos-network:
+    driver: bridge
